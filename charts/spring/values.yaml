@@ -1,0 +1,14 @@
+# Default values for redis-cluster.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+fullnameOverride: "provision-eks"
+
+
+## pod Security Context
+securityContext:
+  enabled: "true"
+  fsGroup: 1000
+  runAsUser: 1000
+  runAsGroup: 1000
+

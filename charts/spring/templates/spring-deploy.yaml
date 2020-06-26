@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: spring-web
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-web
+  template:
+    metadata:
+      name: spring-web-pod
+      labels:
+        app: spring-web
+    spec:
+      {{- if eq .Values.securityContext.enabled "true" }}
+      securityContext:
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.securityContext.runAsGoup }}
+      {{- end }}
+      containers:
+      - name: spring-web
+        image: {{ .Values.image }}
+        # Just spin & wait forever
+        # command:
+        # - /bin/entrypoint.sh
+        livenessProbe:
+          exec:
+            command:
+              - curl
+              - -X POST
+              - http://localhost:8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo health > /tmp/health-check"]
+          preStop:
+            exec:
+              command: ["/bin/sh","-c","while do sleep 30; kill -9 1; done"]
+        volumeMounts:
+        {{- if eq .Values.logPath.enabled "true" }}
+        - mountPath: /var/lib/logs
+          name: log-volume
+        {{- end }}
+        ports:
+        - containerPort: 8080
+        - containerPort: 22
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+        {{- if eq .Values.logPath.enabled "true" }}
+        - name: log-volume
+          hostPath:
+            path: "{{ .Values.logPath.path }}"
+            type: Directory
+        {{- end }}

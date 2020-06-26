@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: spring-web-ingress
+spec:
+  rules:
+  {{- if .Values.hostUrl }}
+  - host: "{{ .Values.hostUrl }}"
+  {{- end }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: spring-web-svc
+          servicePort: 8080
