@@ -9,13 +9,39 @@
 
 
 # 실행 방법
-1. git clone https://github.com/manjoong/spring-petclinic-helm-charts.git
-2. cd spring-petclinic-helm-charts
+1. git clone
+<pre>
+<code>
+git clone https://github.com/manjoong/spring-petclinic-helm-charts.git
+</code>
+</pre>
+2. 해당 디렉토리로 이동
+<pre>
+  <code>
+cd spring-petclinic-helm-charts
+  </code>
+</pre>
+
 3. values.yaml 수정
-4. helm install ./ --name petclinic --namespace default -f ./values.yaml
+4. helm charts 배포
+<pre>
+  <code>
+  helm install ./ --name petclinic --namespace default -f ./values.yaml
+  </code>
+</pre> 
 <img src="./images/complate-helm.png" width="100%" height="60%" title="helm" alt="first"></img>
-5. 'kubectl get all -n default' 명령어를 통해 리소스 생성 확인
-6. 'kubectl get ingress -n default' 명령어를 통해 hosts, address확인
+5. 명령어를 통해 리소스 생성 확인
+<pre>
+  <code>
+  kubectl get all -n default
+  </code>
+</pre> 
+6. 명령어를 통해 ingress의 hosts, address확인
+<pre>
+  <code>
+  kubectl get ingress -n default
+  </code>
+</pre>
 <img src="./images/ingress-check.png" width="100%" height="60%" title="helm" alt="first"></img>
 7. host url을 통해 웹페이지 접속
 <img src="./images/show-page.png" width="100%" height="60%" title="helm" alt="first"></img>
